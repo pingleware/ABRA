@@ -1,0 +1,23 @@
+{
+  "name": "abra",
+  "version": "0.0.1",
+  "description": "Group 5, A machine learning approach to automating the audit of financial statements",
+  "main": "index.js",
+  "author": "Lucas Hofmockel-Spanakis",
+  "license": "MIT",
+  "homepage": "https://github.com/PieInOblivion/ABRA#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PieInOblivion/ABRA.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PieInOblivion/ABRA/issues"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=16.6.0"
+  },
+  "type": "module"
+}
