@@ -19,5 +19,9 @@
   "engines": {
     "node": ">=16.6.0"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "got": "^11.8.2",
+    "pdf-extraction": "^1.0.2"
+  }
 }
