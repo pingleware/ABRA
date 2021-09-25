@@ -1,12 +1,9 @@
-import { readdirSync } from 'fs';
-import { PDFToText } from './modules/pdfExtract.mjs';
+import { downloadPDFs } from './modules/announcementGetter.mjs';
+import { extractPDFs } from './modules/pdfExtract.mjs';
 
-const examplesDocsLoc = `./example_docs/`;
+const companyCode = `vrs`
 
-let docLocations = [];
+await downloadPDFs(companyCode);
+const data = await extractPDFs(companyCode);
 
-readdirSync(examplesDocsLoc).forEach(fileLoc => {
-    docLocations.push(examplesDocsLoc + fileLoc);
-});
-
-console.log(await PDFToText(docLocations[0]));
+console.log(data.length);

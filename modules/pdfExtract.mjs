@@ -1,7 +1,8 @@
+import { getAllFilePaths } from './databaseManager.mjs';
 import { readFileSync } from 'fs';
 import pdf from 'pdf-extraction';
 
-export async function PDFToText(fileLoc) {
+async function PDFFileToText(fileLoc) {
     const dataBuffer = readFileSync(fileLoc);
 
     return await pdf(dataBuffer).then(data => {
@@ -19,4 +20,18 @@ export async function PDFToText(fileLoc) {
         // PDF text
         return data.text;
     });
+}
+
+export async function extractPDFs(companyCode) {
+    const filePaths = getAllFilePaths(companyCode);
+
+    const fileTextPromises = [];
+
+    filePaths.forEach(filePath => {
+        fileTextPromises.push(PDFFileToText(filePath));
+    });
+
+    const fileTexts = Promise.all(fileTextPromises);
+
+    return fileTexts;
 }
