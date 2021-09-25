@@ -4,9 +4,13 @@ import { createWriteStream } from 'fs';
 import https from "https";
 
 async function getAllConfirmPageIds(companyCode) {
+    // Retrieve the last six months worth of announcement hyperlinks
     const page = await got(`https://www.asx.com.au/asx/v2/statistics/announcements.do?by=asxCode&asxCode=${companyCode}&timeframe=D&period=M6`);
-    const pageSplit = page.body.split("/asx/statistics/displayAnnouncement.do?display=pdf&idsId=");
 
+    // Split into each hyperlink
+    const pageSplit = page.body.split("/asx/statistics/displayAnnouncement.do?display=pdf&idsId=");
+    
+    // The first index is garbage and not needed, it's not a link
     pageSplit.shift();
 
     const pdfConfirmPageIds = [];
@@ -19,8 +23,13 @@ async function getAllConfirmPageIds(companyCode) {
 }
 
 async function confirmPageIdToFinalURL(id) {
+    // Retrieve the confirmation page that sits before the PDF link
     const confirmPage = await got(`https://www.asx.com.au/asx/statistics/displayAnnouncement.do?display=pdf&idsId=${id}`);
+    
+    // Extract the pdf link from the confirmation page
     const pdfURL = confirmPage.body.split(`<input name="pdfURL" value="`)[1];
+
+    // Append the relative path to a full one
     return `https://www.asx.com.au${pdfURL.slice(0, 39)}`;
 }
 
@@ -38,7 +47,10 @@ async function confirmPageIdsToFinalURLs(confirmPageIds) {
 }
 
 async function finalURLToFile(finalURL, companyCode) {
+    // Create the PDF file and an open stream to send data to
     const file = createWriteStream(`${savedPDFsDir}${companyCode}/${finalURL.slice(43)}`);
+
+    // Create a Promise on the stream so that we can track when it is finished
     return new Promise((resolve, reject) => {
         https.get(finalURL, res => {
             res.pipe(file)
