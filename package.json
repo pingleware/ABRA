@@ -21,7 +21,9 @@
   },
   "type": "module",
   "dependencies": {
+    "convert-excel-to-json": "^1.7.0",
     "got": "^11.8.2",
+    "nightmare": "^3.0.2",
     "pdf-extraction": "^1.0.2"
   }
 }

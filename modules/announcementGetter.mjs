@@ -1,10 +1,11 @@
-import { database, updateDatabase, createFolder, savedPDFsDir } from './databaseManager.mjs';
+import { createFolder, savedPDFsDir, databaseKeyExists, databasePDFIdsGet, databasePDFIdsSet, databasePDFIdsAddArray } from './databaseManager.mjs';
 import got from 'got';
 import { createWriteStream } from 'fs';
 import https from "https";
 
 async function getAllConfirmPageIds(companyCode) {
     // Retrieve the last six months worth of announcement hyperlinks
+    // https://www2.asx.com.au/markets/trade-our-cash-market/announcements.vrs
     const page = await got(`https://www.asx.com.au/asx/v2/statistics/announcements.do?by=asxCode&asxCode=${companyCode}&timeframe=D&period=M6`);
 
     // Split into each hyperlink
@@ -83,7 +84,7 @@ export async function downloadPDFs(companyCode) {
     const confirmPageIds = await getAllConfirmPageIds(companyCode);
 
     // Check if code already exists in database
-    if (database[companyCode] === undefined) {
+    if (!databaseKeyExists(companyCode)) {
         // Retrieve every PDF file since we have none
 
         const finalURLs = await confirmPageIdsToFinalURLs(confirmPageIds);
@@ -95,23 +96,21 @@ export async function downloadPDFs(companyCode) {
         await finalURLsToFiles(finalURLs, companyCode);
 
         // Update database by creating key and setting it to the confirm page Ids
-        database[companyCode] = confirmPageIds;
-        updateDatabase();
+        databasePDFIdsSet(companyCode, confirmPageIds);
 
     } else {
 
         // Compare our database to the websites
-        let newConfirmPageIds = confirmPageIds.filter((o) => database[companyCode].indexOf(o) === -1);
+        let newConfirmPageIds = confirmPageIds.filter((o) => databasePDFIdsGet(companyCode).indexOf(o) === -1);
 
         // If any, retrieve all new files
         if (newConfirmPageIds.length !== 0) {
-            const finalURLs = await confirmPageIdsToFinalURLs(confirmPageIds);
+            const finalURLs = await confirmPageIdsToFinalURLs(newConfirmPageIds);
 
             await finalURLsToFiles(finalURLs, companyCode)
 
             // Add the new Ids to our database
-            database[companyCode].push(...newConfirmPageIds);
-            updateDatabase();
+            databasePDFIdsAddArray(companyCode, newConfirmPageIds);
         }
     }
 

@@ -24,10 +24,12 @@ async function PDFFileToText(fileLoc) {
 
 export async function extractPDFs(companyCode) {
     const filePaths = getAllFilePaths(companyCode);
+    
+    const filteredFilePaths = filePaths.filter(path => path.endsWith('.pdf'));
 
     const fileTextPromises = [];
 
-    filePaths.forEach(filePath => {
+    filteredFilePaths.forEach(filePath => {
         fileTextPromises.push(PDFFileToText(filePath));
     });
 
