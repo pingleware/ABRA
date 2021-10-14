@@ -3,7 +3,7 @@ import Nightmare from "nightmare";
 import https from "https";
 import { createWriteStream } from 'fs';
 
-import login from "../loginInfo.json";
+import config from "../config.json";
 
 const nightmare = Nightmare({ show: false });
 
@@ -63,8 +63,8 @@ async function getCookieValue() {
     const cookies = await nightmare
 	.goto(`https://` + host + `/af/dathome?xtm-licensee=datpremium`)
     .wait('#okta-signin-username')
-    .type('#okta-signin-username', login.user)
-    .type('#okta-signin-password', login.pass)
+    .type('#okta-signin-username', config.morningstar.user)
+    .type('#okta-signin-password', config.morningstar.pass)
     .click('#okta-signin-submit')
     .wait('#Companies-Result-Content')
     .cookies.get()

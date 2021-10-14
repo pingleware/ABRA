@@ -4,20 +4,24 @@ import { downloadXLS } from './modules/financialGetter.mjs';
 import { extractXLS } from './modules/xlsExtract.mjs';
 import { DeltaZAltmansZScore, DeltaPustylnicksPScore, DeltaRealWealthRScore, DeltaPerceivedWealthPScore} from './modules/financialAlgorithms.mjs';
 
-const companyCode = `bhp`;
-const years = [ 2021, 2020 ];
+const companyCode = `fnp`;
+const year = 2019;
 
-await downloadPDFs(companyCode);
+const years = [ year-1, year ];
+
+//await downloadPDFs(companyCode);
 await downloadXLS(companyCode, years);
 
 //const data = await extractPDFs(companyCode);
 const XLSData = extractXLS(companyCode, years);
+const currentYearXLS = XLSData[years[1]];
+const previousYearXLS = XLSData[years[0]];
 
-const DeltaZAltmansZScoreRes = DeltaZAltmansZScore(XLSData[2021], XLSData[2020]);
-const DeltaPustylnicksPScoreRes = DeltaPustylnicksPScore(XLSData[2021], XLSData[2020]);
+const DeltaZAltmansZScoreRes = DeltaZAltmansZScore(currentYearXLS, previousYearXLS);
+const DeltaPustylnicksPScoreRes = DeltaPustylnicksPScore(currentYearXLS, previousYearXLS);
 
-const DeltaRealWealthRScoreRes = DeltaRealWealthRScore(XLSData[2021], XLSData[2020]);
-const DeltaPerceivedWealthPScoreRes = DeltaPerceivedWealthPScore(XLSData[2021], XLSData[2020]);
+const DeltaRealWealthRScoreRes = DeltaRealWealthRScore(currentYearXLS, previousYearXLS);
+const DeltaPerceivedWealthPScoreRes = DeltaPerceivedWealthPScore(currentYearXLS, previousYearXLS);
 
 console.log(`Through Altmans and Pustylnicks scores, 𝝙P ${DeltaPustylnicksPScoreRes} > 𝝙Z ${DeltaZAltmansZScoreRes} = ${DeltaPustylnicksPScoreRes>DeltaZAltmansZScoreRes} suggests that ${companyCode} may be involved in manipulating their financial statements.`);
 console.log(`Through Pustylnicks Real and Perceived wealth scores, if 𝝙P - 𝝙R = ${DeltaPerceivedWealthPScoreRes - DeltaRealWealthRScoreRes} > 0.3 = ${DeltaPerceivedWealthPScoreRes - DeltaRealWealthRScoreRes > 0.3} suggests ${companyCode} were more likely to be involved in financial statement manipulation`);
