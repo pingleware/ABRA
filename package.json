@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "node --experimental-json-modules server.js",
-    "test": "node --experimental-json-modules index.js"
+    "test": "node --experimental-json-modules test.js"
   },
   "engines": {
     "node": ">=16.6.0"
