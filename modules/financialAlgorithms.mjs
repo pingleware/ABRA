@@ -62,7 +62,13 @@ export function DeltaPerceivedWealthPScore(currentXLS, priviousXLS) {
     return result;
 }
 
+export function AcidTestRatio(xls) {
+    return valueCrawler(xls["Ratio Analysis"], "Quick Ratio");
+}
 
+export function CurrentRatio(xls) {
+    return valueCrawler(xls["Ratio Analysis"], "Current Ratio");
+}
 
 function valueCrawler(array, string) {
     const result = array.find(obj => {
