@@ -70,6 +70,31 @@ export function CurrentRatio(xls) {
     return valueCrawler(xls["Ratio Analysis"], "Current Ratio");
 }
 
+export function CashPercentage(xls) {
+    return valueCrawler(xls["Asset Base Analysis"], "Cash (%)");
+}
+
+export function InventoryTurnover(xls) {
+    return valueCrawler(xls["Ratio Analysis"], "Inventory Turnover");
+}
+
+export function DaysReceivable(xls) {
+    return valueCrawler(xls["Ratio Analysis"], "Days Receivables");
+}
+
+export function ROE(xls) {
+    return valueCrawler(xls["Ratio Analysis"], "ROE (%)");
+}
+
+export function ROA(xls) {
+    return valueCrawler(xls["Ratio Analysis"], "ROA (%)");
+}
+
+export function DebtToEquityRatio(xls) {
+    const result = valueCrawler(xls["Balance Sheet"], "Total Liabilities") / valueCrawler(xls["Balance Sheet"], "Total Equity");
+    return result;
+}
+
 function valueCrawler(array, string) {
     const result = array.find(obj => {
         if (obj.C === string) return true;
