@@ -18,5 +18,18 @@
     },
     "ABRA": {
         "port": 8080
-    }
+    },
+    "trainList": [
+        {"code": "BHP", "year": 2020, "output": 0},
+        {"code": "RIO", "year": 2020, "output": 0},
+        {"code": "FMG", "year": 2020, "output": 0},
+        {"code": "WES", "year": 2020, "output": 0},
+        {"code": "WOW", "year": 2020, "output": 0},
+        {"code": "STO", "year": 2020, "output": 0},
+        {"code": "TLS", "year": 2020, "output": 0},
+        {"code": "NCM", "year": 2020, "output": 0},
+        {"code": "DSH", "year": 2015, "output": 0.8},
+        {"code": "HSL", "year": 2000, "output": 0.9},
+        {"code": "ONE1", "year": 2000, "output": 1}
+    ]
 }

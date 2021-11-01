@@ -9,11 +9,11 @@ const nightmare = Nightmare({ show: false });
 
 const host = `datanalysis-morningstar-com-au.simsrad.net.ocs.mq.edu.au`;
 
-export async function downloadXLS(companyCode, years) {
+export async function downloadXLS(companyCode, years, cookieValue = null) {
     if(!databaseKeyExists(companyCode)) {
         createFolder(companyCode);
 
-        const cookieValue = await getCookieValue();
+        cookieValue = cookieValue ? cookieValue : await getCookieValue();
 
         const XLSPromises = [];
 
@@ -30,7 +30,7 @@ export async function downloadXLS(companyCode, years) {
         let newConfirmXLSYears = years.filter((o) => databaseXLSYearsGet(companyCode).indexOf(o) === -1);
 
         if (newConfirmXLSYears.length !== 0) {
-            const cookieValue = await getCookieValue();
+            cookieValue = cookieValue ? cookieValue : await getCookieValue();
 
             const XLSPromises = [];
 
@@ -44,7 +44,7 @@ export async function downloadXLS(companyCode, years) {
         }
 
     }
-    
+
     return 1;
 }
 
@@ -59,7 +59,7 @@ async function downloadXLSByYear(cookie, companyCode, year) {
     return finalURLToFile(options, companyCode, year);
 }
 
-async function getCookieValue() {
+export async function getCookieValue() {
     const cookies = await nightmare
 	.goto(`https://` + host + `/af/dathome?xtm-licensee=datpremium`)
     .wait('#okta-signin-username')

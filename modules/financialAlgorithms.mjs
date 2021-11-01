@@ -1,4 +1,27 @@
-export function AltmansZScore(xls) {
+export function createMarkersObject(currentYearXLS, previousYearXLS) {
+    return {
+        DeltaZAltmansZScore: DeltaZAltmansZScore(currentYearXLS, previousYearXLS),
+        DeltaPustylnicksPScore: DeltaPustylnicksPScore(currentYearXLS, previousYearXLS),
+        DeltaRealWealthRScore: DeltaRealWealthRScore(currentYearXLS, previousYearXLS),
+        DeltaPerceivedWealthPScore: DeltaPerceivedWealthPScore(currentYearXLS, previousYearXLS),
+        AcidTestRatio: AcidTestRatio(currentYearXLS),
+        CurrentRatio: CurrentRatio(currentYearXLS),
+        CashPercentage: CashPercentage(currentYearXLS),
+        DaysReceivable: DaysReceivable(currentYearXLS),
+        ROE: ROE(currentYearXLS),
+        ROA: ROA(currentYearXLS),
+        DebtToEquityRatio: DebtToEquityRatio(currentYearXLS)
+    }
+}
+
+function valueCrawler(array, string) {
+    const result = array.find(obj => {
+        if (obj.C === string) return true;
+    });
+    return result.D;
+}
+
+function AltmansZScore(xls) {
     const OperatingWkgCapital = valueCrawler(xls["Sundry Analysis"], "Operating Wkg Capital");
     const TotalAssets = valueCrawler(xls["Balance Sheet"], "Total Assets");
     const RetainedEarnings = valueCrawler(xls["Balance Sheet"], "Retained Earnings");
@@ -11,12 +34,12 @@ export function AltmansZScore(xls) {
     return result;
 }
 
-export function DeltaZAltmansZScore(currentXLS, priviousXLS) {
+function DeltaZAltmansZScore(currentXLS, priviousXLS) {
     const result = (AltmansZScore(currentXLS) - AltmansZScore(priviousXLS)) / AltmansZScore(priviousXLS);
     return result;
 }
 
-export function PustylnicksPScore(xls) {
+function PustylnicksPScore(xls) {
     const TotalAssets = valueCrawler(xls["Balance Sheet"], "Total Assets");
     const RetainedEarnings = valueCrawler(xls["Balance Sheet"], "Retained Earnings");
     const EBIT = valueCrawler(xls["Profit Loss"], "EBIT");
@@ -29,12 +52,12 @@ export function PustylnicksPScore(xls) {
     return result;
 }
 
-export function DeltaPustylnicksPScore(currentXLS, priviousXLS) {
+function DeltaPustylnicksPScore(currentXLS, priviousXLS) {
     const result = (PustylnicksPScore(currentXLS) - PustylnicksPScore(priviousXLS)) / PustylnicksPScore(priviousXLS);
     return result;
 }
 
-export function RealWealthRScore(xls) {
+function RealWealthRScore(xls) {
     const OperatingWkgCapital = valueCrawler(xls["Sundry Analysis"], "Operating Wkg Capital");
     const TotalAssets = valueCrawler(xls["Balance Sheet"], "Total Assets");
     const OperatingRevenue = valueCrawler(xls["Profit Loss"], "Operating Revenue");
@@ -43,12 +66,12 @@ export function RealWealthRScore(xls) {
     return result;
 }
 
-export function DeltaRealWealthRScore(currentXLS, priviousXLS) {
+function DeltaRealWealthRScore(currentXLS, priviousXLS) {
     const result = (RealWealthRScore(currentXLS) - RealWealthRScore(priviousXLS)) / RealWealthRScore(priviousXLS);
     return result;
 }
 
-export function PerceivedWealthPScore(xls) {
+function PerceivedWealthPScore(xls) {
     const TotalEquity = valueCrawler(xls["Balance Sheet"], "Total Equity");
     const TotalAssets = valueCrawler(xls["Balance Sheet"], "Total Assets");
     const TotalRevenueExcludingInterest = valueCrawler(xls["Profit Loss"], "Total Revenue Excluding Interest");
@@ -57,47 +80,36 @@ export function PerceivedWealthPScore(xls) {
     return result;
 }
 
-export function DeltaPerceivedWealthPScore(currentXLS, priviousXLS) {
+function DeltaPerceivedWealthPScore(currentXLS, priviousXLS) {
     const result = (PerceivedWealthPScore(currentXLS) - PerceivedWealthPScore(priviousXLS)) / PerceivedWealthPScore(priviousXLS);
     return result;
 }
 
-export function AcidTestRatio(xls) {
+function AcidTestRatio(xls) {
     return valueCrawler(xls["Ratio Analysis"], "Quick Ratio");
 }
 
-export function CurrentRatio(xls) {
+function CurrentRatio(xls) {
     return valueCrawler(xls["Ratio Analysis"], "Current Ratio");
 }
 
-export function CashPercentage(xls) {
+function CashPercentage(xls) {
     return valueCrawler(xls["Asset Base Analysis"], "Cash (%)");
 }
 
-export function InventoryTurnover(xls) {
-    return valueCrawler(xls["Ratio Analysis"], "Inventory Turnover");
-}
-
-export function DaysReceivable(xls) {
+function DaysReceivable(xls) {
     return valueCrawler(xls["Ratio Analysis"], "Days Receivables");
 }
 
-export function ROE(xls) {
+function ROE(xls) {
     return valueCrawler(xls["Ratio Analysis"], "ROE (%)");
 }
 
-export function ROA(xls) {
+function ROA(xls) {
     return valueCrawler(xls["Ratio Analysis"], "ROA (%)");
 }
 
-export function DebtToEquityRatio(xls) {
+function DebtToEquityRatio(xls) {
     const result = valueCrawler(xls["Balance Sheet"], "Total Liabilities") / valueCrawler(xls["Balance Sheet"], "Total Equity");
     return result;
-}
-
-function valueCrawler(array, string) {
-    const result = array.find(obj => {
-        if (obj.C === string) return true;
-    });
-    return result.D;
 }

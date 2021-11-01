@@ -25,6 +25,7 @@
     "convert-excel-to-json": "^1.7.0",
     "google-spreadsheet": "^3.1.15",
     "got": "^11.8.2",
+    "limdu": "^0.9.4",
     "nightmare": "^3.0.2",
     "pdf-extraction": "^1.0.2",
     "query-string": "^7.0.1"
