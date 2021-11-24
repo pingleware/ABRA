@@ -9,14 +9,27 @@ await doc.useServiceAccountAuth({
     private_key: config.googleSheets.private_key,
   });
 
-await doc.loadInfo(); // loads document properties and worksheets
-console.log(doc.title);
-
+await doc.loadInfo();
 const sheet = await doc.sheetsByIndex[0];
 
-await sheet.loadCells('A1:A1')
+let counter = 1;
 
-const a1 = sheet.getCell(0, 0);
+export async function initSheet(size) {
+  await sheet.loadCells(`A1:B${size}`);
+  sheet.getCell(0, 0).value = 'ASX Code';
+  sheet.getCell(0, 1).value = 'Confidence (%)';
+  await sheet.saveUpdatedCells();
+}
 
-console.log(a1.value);
-//https://theoephraim.github.io/node-google-spreadsheet/#/
+export async function saveCellToSheet(ASXCode, confidence) {
+  const codeCell = sheet.getCell(counter, 0);
+  const confidenceCell = sheet.getCell(counter, 1);
+
+  codeCell.value = ASXCode;
+  confidenceCell.value = confidence;
+
+  counter++;
+  if (counter % 10 === 0) {
+    await sheet.saveUpdatedCells();
+  }
+}

@@ -14,8 +14,8 @@
     "url": "https://github.com/PieInOblivion/ABRA/issues"
   },
   "scripts": {
-    "start": "node --experimental-json-modules server.js",
-    "test": "node --experimental-json-modules test.js"
+    "start": "node --experimental-json-modules automated.js",
+    "server": "node --experimental-json-modules server.js"
   },
   "engines": {
     "node": ">=16.6.0"
