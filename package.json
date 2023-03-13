@@ -4,14 +4,21 @@
   "description": "Group 5, A machine learning approach to automating the audit of financial statements",
   "main": "index.js",
   "author": "Lucas Hofmockel-Spanakis",
+  "maintainers": [
+    {
+      "name": "PRESSPAGE ENTERTAINMENT INC dba PINGLEWARE",
+      "email": "maintainers@pingleware.work",
+      "url": "https://support.pingleware.work"
+    }
+  ],
   "license": "MIT",
-  "homepage": "https://github.com/PieInOblivion/ABRA#readme",
+  "homepage": "https://github.com/pingleware/ABRA#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PieInOblivion/ABRA.git"
+    "url": "git+https://github.com/pingleware/ABRA.git"
   },
   "bugs": {
-    "url": "https://github.com/PieInOblivion/ABRA/issues"
+    "url": "https://support.pingleware.work"
   },
   "scripts": {
     "start": "node --experimental-json-modules automated.js",
