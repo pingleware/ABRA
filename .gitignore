@@ -2,3 +2,4 @@ node_modules/
 savedPDFs/
 config.json
 package-lock.json
+._*
